@@ -6,12 +6,11 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 12:58:53 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/05 16:04:39 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/07 13:46:05 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 static int	print_format(char c, va_list args)
 {
@@ -46,31 +45,40 @@ static int	check_flags(char const *format, va_list args)
 	return (print_cs);
 }
 
-int	ft_printf(char const *format, ...)
+static int	iter_format(char const *format, va_list args)
 {
-	va_list	args;
 	int		nc;
 	int		print_cs;
 
 	nc = 0;
-	va_start(args, format);
 	while (*format)
 	{
-		print_cs = 0;
 		if (*format == '%')
 		{
 			format++;
-			print_cs += check_flags(format, args);
+			print_cs = check_flags(format, args);
 			while (!ft_strchr("cspdiuxX%", *format))
 				format++;
 		}
 		else
-			print_cs += write(1, format, 1);
+			print_cs = write(1, format, 1);
 		if (print_cs == -1)
 			return (-1);
 		nc += print_cs;
 		format++;
 	}
+	return (nc);
+}
+
+int	ft_printf(char const *format, ...)
+{
+	va_list	args;
+	int		nc;
+
+	if (!format)
+		return (-1);
+	va_start(args, format);
+	nc = iter_format(format, args);
 	va_end(args);
 	return (nc);
 }

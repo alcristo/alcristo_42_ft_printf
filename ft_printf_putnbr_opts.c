@@ -6,7 +6,7 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 09:31:14 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/06 13:09:11 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/07 10:18:24 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,6 @@ int	ft_printf_putnbr_opts(int nbr, t_opts *opts)
 	chrs_n = charnbr(nbr, opts);
 	nc = 0;
 	sign = (opts->plus == 1 || opts->space == 1 || nbr < 0);
-	if (chrs_n + sign >= opts->width)
-		opts->width = chrs_n + sign;
-	if (chrs_n >= opts->precision)
-		opts->precision = chrs_n;
 	nc += ft_printf_nbr_padtoleft(opts, chrs_n, (nbr >= 0), sign);
 	if (chrs_n > 0)
 		nc += print_nbr(nbr);

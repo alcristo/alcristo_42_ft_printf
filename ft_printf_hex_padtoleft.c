@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_nbr_padtoleft.c                          :+:      :+:    :+:   */
+/*   ft_printf_hex_padtoleft.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/04 10:40:14 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/07 11:39:35 by alcristo         ###   ########.fr       */
+/*   Created: 2026/06/07 10:27:12 by alcristo          #+#    #+#             */
+/*   Updated: 2026/06/07 10:54:18 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	print_zeros(t_opts *opts, int chrs_n, int plus, int sign)
+static int	print_zeros(t_opts *opts, int chrs_n, int caps, int print_alt)
 {
 	int	nc;
 	int	prc;
 
 	nc = 0;
-	if (plus == 1)
+	if (opts->alt == 1 && print_alt == 1)
 	{
-		if (opts->plus == 1)
-			nc += write(1, "+", 1);
-		else if (opts->space == 1)
-			nc += write(1, " ", 1);
+		if (caps == 1)
+			nc += write(1, "0X", 2);
+		else
+			nc += write(1, "0x", 2);
 	}
-	else
-		nc += (write(1, "-", 1));
-	if (opts->zero == 1 && opts->precision < 0 && opts->right == 0)
-		prc = opts->width - sign;
+	if (opts->precision < 0 && opts->right == 0 && opts->zero == 1)
+		prc = opts->width - 2 * (print_alt > 0);
 	else
 	{
 		if (opts->precision < chrs_n)
@@ -40,38 +38,38 @@ static int	print_zeros(t_opts *opts, int chrs_n, int plus, int sign)
 	return (nc);
 }
 
-static int	print_spaces(t_opts *opts, int chrs_n, int plus, int sign)
+static int	print_spaces(t_opts *opts, int chrs_n, int caps, int print_alt)
 {
 	int	nc;
 
 	nc = 0;
-	if (opts->width < chrs_n + sign)
-		opts->width = chrs_n + sign;
+	if (opts->width < chrs_n + 2 * (print_alt > 0))
+		opts->width = chrs_n + 2 * (print_alt > 0);
 	if (opts->precision < chrs_n)
 		opts->precision = chrs_n;
-	while (opts->width-- > opts->precision + sign)
+	while (opts->width-- > opts->precision + 2 * (print_alt > 0))
 		nc += write(1, " ", 1);
-	return (nc + print_zeros(opts, chrs_n, plus, sign));
+	return (nc + print_zeros(opts, chrs_n, caps, print_alt));
 }
 
-int	ft_printf_nbr_padtoleft(t_opts *opts, int chrs_n, int plus, int sign)
+int	ft_printf_hex_padtoleft(t_opts *opts, int chrs_n, int caps, int print_alt)
 {
 	int	nc;
 
 	nc = 0;
 	if (opts->precision >= opts->width)
-		nc += print_zeros(opts, chrs_n, plus, sign);
+		nc += print_zeros(opts, chrs_n, caps, print_alt);
 	else
 	{
 		if (opts->right == 0)
 		{
 			if (opts->precision < 0 && opts->zero == 1)
-				nc += print_zeros(opts, chrs_n, plus, sign);
+				nc += print_zeros(opts, chrs_n, caps, print_alt);
 			else
-				nc += print_spaces(opts, chrs_n, plus, sign);
+				nc += print_spaces(opts, chrs_n, caps, print_alt);
 		}
 		else
-			nc += print_zeros(opts, chrs_n, plus, sign);
+			nc += print_zeros(opts, chrs_n, caps, print_alt);
 	}
 	return (nc);
 }

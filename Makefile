@@ -6,7 +6,7 @@
 #    By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/28 09:17:08 by alcristo          #+#    #+#              #
-#    Updated: 2026/06/05 16:04:58 by alcristo         ###   ########.fr        #
+#    Updated: 2026/06/07 10:48:15 by alcristo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SOURCES= 	ft_printf.c							\
 			ft_printf_nbr_padtoleft.c			\
 			ft_printf_putuns_opts.c				\
 			ft_printf_puthex_opts.c				\
+			ft_printf_hex_padtoleft.c			\
 			ft_printf_putmem_opts.c				\
 			ft_atoi.c							\
 			ft_isdigit.c						\

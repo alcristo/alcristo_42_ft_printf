@@ -6,7 +6,7 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 14:09:18 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/05 14:50:37 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/07 11:37:35 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int		ft_printf_putnbr_opts(int nbr, t_opts *opts);
 int		ft_printf_nbr_padtoleft(t_opts *opts, int chrs_n, int plus, int sign);
 int		ft_printf_putuns_opts(unsigned int nbr, t_opts *opts);
 int		ft_printf_puthex_opts(unsigned int nbr, int caps, t_opts *opts);
+int		ft_printf_hex_padtoleft(t_opts *opts, int chrs_n,
+			int caps, int print_alt);
 int		ft_printf_putchar_opts(int c, t_opts *opts);
 int		ft_printf_putstr_opts(char *str, t_opts *opts);
 int		ft_printf_putmem_opts(void *memadd, t_opts *opts);

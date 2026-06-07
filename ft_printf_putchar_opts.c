@@ -6,12 +6,11 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 13:57:18 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/06 16:10:05 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/07 11:40:28 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <stdio.h>
 
 int	ft_printf_putchar_opts(int c, t_opts *opts)
 {

@@ -6,7 +6,7 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 13:41:13 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/06 16:33:02 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/07 11:31:54 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,14 @@ static int	pad_to_left(size_t addr, t_opts *opts, int chrs_n, int sign)
 	{
 		if (opts->right == 0)
 		{
-			if (opts->zero == 0 || opts->precision >= chrs_n)
+			if (opts->precision < 0 && opts->zero == 1)
+				nc += print_zeros(addr, opts, opts->width, chrs_n);
+			else
 			{
-				while (opts->width-- > opts->precision + 2 + sign)
+				while (opts->width-- > opts->precision + (2 + sign) * !(!addr))
 					nc += write(1, " ", 1);
 				nc += print_zeros(addr, opts, opts->precision, chrs_n);
 			}
-			else
-				nc += print_zeros(addr, opts, opts->width, chrs_n);
 		}
 		else
 			nc += print_zeros(addr, opts, opts->precision, chrs_n);
@@ -99,6 +99,8 @@ int	ft_printf_putmem_opts(void *memadd, t_opts *opts)
 	sign = (opts->space == 1 || opts->plus == 1);
 	if (opts->width < chrs_n + (2 * (chrs_n > 0)) + sign)
 		opts->width = chrs_n + (2 * (chrs_n > 0)) + sign;
+	if (!addr)
+		opts->precision = 5;
 	if (opts->precision < chrs_n + 2)
 		opts->precision = chrs_n;
 	nc = 0;
