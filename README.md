@@ -4,25 +4,26 @@
 
 ## Descripción
 
-Este proyecto trata de imitar la función "printf" de C con el fin de imprimir caracteres de  forma eficiente. Sin embargo, únicamente soporta caracteres, cadenas de carcteres, punteros y direcciones de memoria, y números enteros, enteros sin signo y hexadecimales. No se ha añadido la función de escribir números de punto flotante, así como números en formato <i>long</i> y de tamaño superior en formato decimal.
+Este proyecto trata de imitar la función "printf" de C con el fin de imprimir caracteres de forma eficiente. Sin embargo, únicamente soporta caracteres, cadenas de carcteres, punteros y direcciones de memoria, y números enteros, enteros sin signo y hexadecimales. No se ha añadido la función de escribir números de punto flotante, así como números en formato <i>long</i> y de tamaño superior en formato decimal.
 
-Esta función es variádica. Esto significa que toma como variables de entrada una cadena de caracteres, al la que denominaremos <i>format</i> y un número indeterminado de variables (argumentos) en múltiples formatos. El tipo de formato es determinado por el caracter '%' en <i>format</i> seguido de uno de los caracteres "cspdiuxX%".
+Esta función es variádica. Esto significa que toma como variables de entrada una cadena de caracteres, a la que denominaremos <i>format</i> y un número indeterminado de variables (argumentos) en múltiples formatos. El tipo de formato es determinado por el caracter '%' en <i>format</i> seguido de uno de los caracteres "cspdiuxX%".
 
 La función imprime la cadena <i>format</i> junto con los argumentos en el orden establecido. Además, devuelve como valor de salida el número de caracteres que ha imprimido. Si detecta un problema, devuelve como valor -1.
+
 Es posible variar el formato con <i>flags</i>, así como una anchura mínima y una precisión.
 
 ## Instrucciones
 
-### Compliación
+### Compilación
 
-Para compilar la librería únicamente es necesario escribir make en la raíz del directorio en el que se encuentre el Makefile. Dicho Makefile posee las reglas all, clean, fclean y re. El resultado final será una librería denominada <i>libft.a</i>.
+Para compilar la librería únicamente es necesario escribir el comando make en la raíz del directorio en el que se encuentre el Makefile. Dicho Makefile posee las reglas all, clean, fclean y re, las cuales crean la librería, borran los objetos temporales, hace la regla clean y elimina también la librería, y ejecuta all tras fclean respectivamente. El resultado final será una librería denominada <i>libft.a</i>.
 
 ### Ejecución
 
-Para ejecutar un programa .c con la función ft_printf es necesario incluir la cabecera "ft_printf.h" al principio de dicho programa. Para que compile únicamente será necesario escribir en el terminal
+Para ejecutar un programa .c con la función ft\_printf es necesario incluir la cabecera "ft\_printf.h" al principio de dicho programa. Para que compile únicamente será necesario escribir en el terminal
 
 ```bash
-cc [*.c] ft_printf.a
+cc [*.c] libftprintf.a
 ```
 
 ### Funcionamiento
@@ -42,7 +43,7 @@ Para escribir un argumento se debe escribir en el formato un caracter '%' seguid
 - %x y %X: escriben un número hexadecimal desde su forma decimal. Ponen los dígitos abcdef en minúscula y mayúscula respectivamente.
 - %%: escribe simplemente un símbolo de porcentaje. No requiere argumento.
 
-Alternativamente se pueden usar flags y definir la anchura mínima y la precisión. Para ello se debe indicar tras el '%' y antes del identificador. Siempre deben tener el siguiente orden:
+Alternativamente se pueden usar flags y definir la anchura mínima y la precisión. Para ello se debe indicar entre el '%' y cualquier identificador 'a'. Siempre deben tener el siguiente orden:
 ```vim
 ft_printf("%[flags][anchura].[precisión]a", ...)
 ```
@@ -59,15 +60,15 @@ ft_printf("%[flags][anchura].[precisión]a", ...)
 
 El algoritmo utilizado fue el siguiente:
 
-Empieza protegiendo la función contra formato nulo. Luego va iterando sobre el formato escribiéndolo. Si detecta un % buscará flags. Si no las detecta hará un algoritmo de impresión simple para no reservar memoria para las flags. Si ve que el número de caracteres imprimidos es en algún momento -1, deja de iterar y devuelve -1. Si no, va sumando el número de caracteres mientras los imprime.
+Empieza protegiendo la función contra formato nulo. Luego va iterando sobre el formato escribiéndolo. Si detecta un % buscará flags. Si no las detecta ejecutará un algoritmo de impresión simple para no reservar memoria para las flags. Si ve que el número de caracteres imprimidos es en algún momento -1, deja de iterar y devuelve -1. Si no, va sumando el número de caracteres mientras los imprime.
 
-Si en algún momento detecta una flag pasa a n algoritmo de impresión más complejo. Empieza reservando memoria para una estructura de 7 números enteros: 5 para cada flag, una para a  anchura mínima y otra para la precisión. Primero asigna un cero a cada flag y les va asignando 1 a medida que las encuentra. Después asigna la anchura mínima y la precisión, siendo 0 y -1 respectivamente en caso de que no las encuentre. Esta precisión negativa será importante porque si es cero y la flag '0' está activada no se imprimirán ceros, sino espacios. Cuando ha terminado, aplica el algoritmo de impresión complejo. Finalmente, libera la memoria de la estructura.
+Si en algún momento detecta una flag pasa a un algoritmo de impresión más complejo. Empieza reservando memoria para una estructura de 7 números enteros: 5 para las flags, una para la anchura mínima y otra para la precisión. Primero asigna un cero a cada flag y les va asignando 1 a medida que las encuentra. Después asigna la anchura mínima y la precisión, siendo 0 y -1 respectivamente en caso de que no las encuentre. Esta precisión negativa será importante porque si es cero y la flag '0' está activada no se imprimirán ceros, sino espacios. Cuando ha terminado, aplica el algoritmo de impresión complejo. Finalmente, libera la memoria de la estructura.
 
 En el algoritmo complejo, primero cuenta el número de caracteres que normalmente imprimiría el simple. Luego añade espacios a la izquierda si no está marcada la flag '-'. Este proceso normalmente tiene su función. Después añade el argumento. Finalmente, si se marca la flag '-' resta el número de caracteres imprimidos durante el proceso a la anchura y añade espacios hasta que la anchura sea cero.
 
-La impresión a la izquierda requiere comparar la precisión y la anchura. Si la primera es mayor que la segunda imprime el signo si lo hay y los ceros. Si no lo es se mira si la bandera '-' está marcada. Si lo está imprime los ceros y el signo. Si no, mira si la precisión es negativa y la bandera '0' está marcada. Si ambas se cumplen imprime el signo y los ceros. De lo contrario imprime un número de espacios hasta anchura llega al número de caracteres a imprimir más el signo.
+La impresión a la izquierda requiere comparar la precisión y la anchura. Si la primera es mayor que la segunda imprime el signo si lo hay y los ceros. Si no lo es se mira si la bandera '-' está marcada. Si lo está imprime los ceros y el signo, imprimiendo los espacios tras el argumento. Si no, mira si la precisión es negativa y la bandera '0' está marcada. Si ambas condiciones se cumplen imprime el signo y los ceros. De lo contrario imprime un número de espacios hasta anchura llega al número de caracteres a imprimir más el signo.
 
-Antes de imprimir los ceros imprime primero el signo, ya sea +, -, espacio o 0x. Luego mira si la condición del párrafo anterior. Si se cumple añade ceros hasta que la anchura pasa a ser el número de caracteres a imprimir. Si no, hace lo mismo pero cn la precisión.
+Antes de imprimir los ceros imprime primero el signo, ya sea +, -, espacio o 0x. Luego mira si la condición del párrafo anterior. Si se cumple añade ceros hasta que la anchura pasa a ser el número de caracteres a imprimir. Si no, hace lo mismo pero con la precisión.
 
 ## Recursos
 
