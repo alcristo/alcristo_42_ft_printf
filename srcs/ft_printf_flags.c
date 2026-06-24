@@ -6,7 +6,7 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 13:53:09 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/09 14:33:24 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/23 10:49:59 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	print_format(char c, va_list args, t_opts *opts)
 {
 	if (c == '%')
-		return (write(1, "%", 1));
+		return (write(opts->fd, "%", 1));
 	else if (c == 'c')
 		return (ft_printf_putchar_opts(va_arg(args, int), opts));
 	else if (c == 's')
@@ -30,6 +30,8 @@ static int	print_format(char c, va_list args, t_opts *opts)
 		return (ft_printf_puthex_opts(va_arg(args, unsigned int), 0, opts));
 	else if (c == 'X')
 		return (ft_printf_puthex_opts(va_arg(args, unsigned int), 1, opts));
+	else if (c == 'f')
+		return (ft_printf_putflt_opts(va_arg(args, double), opts));
 	return (-1);
 }
 
@@ -75,6 +77,13 @@ static void	minimum_width(char const *format, t_opts *opts)
 	}
 	else
 		opts->precision = -1;
+	if (*format == '/')
+	{
+		format++;
+		opts->fd = ft_atoi(format);
+	}
+	else
+		opts->fd = 1;
 }
 
 static int	free_flags(t_opts *opts)
@@ -97,11 +106,11 @@ int	ft_printf_flags(char const *format, va_list args)
 	if (!format)
 		return (free_flags(opts));
 	minimum_width(format, opts);
-	while ((ft_isdigit(*format) || *format == '.') && *(format))
+	while ((ft_isdigit(*format) || ft_strchr("./", *format)) && *(format))
 		format++;
 	if (!format)
 		return (free_flags(opts));
-	if (ft_strchr("cspdiuxX%", *format))
+	if (ft_strchr("cspdiuxXf%", *format))
 		print_cs = print_format(*format, args, opts);
 	else
 		print_cs = -1;

@@ -6,7 +6,7 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 12:58:53 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/09 14:58:28 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/23 10:45:14 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ static int	print_format(char c, va_list args)
 		return (ft_printf_puthex(va_arg(args, unsigned int), 0));
 	else if (c == 'X')
 		return (ft_printf_puthex(va_arg(args, unsigned int), 1));
+	else if (c == 'f')
+		return (ft_printf_putflt(va_arg(args, double)));
 	return (-1);
 }
 
@@ -38,7 +40,7 @@ static int	check_flags(char const *format, va_list args)
 	int	print_cs;
 
 	print_cs = 0;
-	if (ft_strchr("0-#+ .", *format) || ft_isdigit(*format))
+	if (ft_strchr("0-#+ ./", *format) || ft_isdigit(*format))
 		print_cs += ft_printf_flags(format, args);
 	else
 		print_cs += print_format(*format, args);
@@ -61,7 +63,7 @@ static int	iter_format(char const *format, va_list args)
 			print_cs = check_flags(format, args);
 			if (print_cs == -1)
 				return (-1);
-			while (!ft_strchr("cspdiuxX%", *format))
+			while (!ft_strchr("cspdiuxXf%", *format))
 				format++;
 		}
 		else
@@ -86,3 +88,9 @@ int	ft_printf(char const *format, ...)
 	va_end(args);
 	return (nc);
 }
+
+/*
+Consejo de Alberto:
+Añadir flag para descriptor de archivo.
+Al parecer vendra bien para el push swap
+*/

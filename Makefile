@@ -6,7 +6,7 @@
 #    By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/28 09:17:08 by alcristo          #+#    #+#              #
-#    Updated: 2026/06/08 09:40:14 by alcristo         ###   ########.fr        #
+#    Updated: 2026/06/24 09:16:30 by alcristo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ SOURCES= 	srcs/ft_printf.c							\
 			srcs/ft_printf_putuns.c						\
 			srcs/ft_printf_puthex.c						\
 			srcs/ft_printf_putmem.c						\
-			srcs/ft_printf_putmem.c						\
+			srcs/ft_printf_putflt.c						\
 			srcs/ft_printf_flags.c						\
 			srcs/ft_printf_putchar_opts.c				\
 			srcs/ft_printf_putstr_opts.c				\
@@ -29,9 +29,11 @@ SOURCES= 	srcs/ft_printf.c							\
 			srcs/ft_printf_puthex_opts.c				\
 			srcs/ft_printf_hex_padtoleft.c				\
 			srcs/ft_printf_putmem_opts.c				\
+			srcs/ft_printf_putflt_opts.c				\
 			srcs/ft_atoi.c								\
 			srcs/ft_isdigit.c							\
 			srcs/ft_strchr.c							\
+			srcs/ft_power.c								\
 
 OBJECTS= $(SOURCES:.c=.o)
 

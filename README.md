@@ -1,4 +1,4 @@
-<i>Este proyecto ha sido creado  como parte del currículo de 42 por \<alcristo\>[Álvaro Cistóbal Olalla]</i>
+*Este proyecto ha sido creado  como parte del currículo de 42 por \<alcristo\>[Álvaro Cistóbal Olalla]*
 
 # ft_printf
 
@@ -6,17 +6,17 @@
 
 Este proyecto trata de imitar la función "printf" de C con el fin de imprimir caracteres de forma eficiente. Sin embargo, únicamente soporta caracteres, cadenas de carcteres, punteros y direcciones de memoria, y números enteros, enteros sin signo y hexadecimales. No se ha añadido la función de escribir números de punto flotante, así como números en formato <i>long</i> y de tamaño superior en formato decimal.
 
-Esta función es variádica. Esto significa que toma como variables de entrada una cadena de caracteres, a la que denominaremos <i>format</i> y un número indeterminado de variables (argumentos) en múltiples formatos. El tipo de formato es determinado por el caracter '%' en <i>format</i> seguido de uno de los caracteres "cspdiuxX%".
+Esta función es variádica. Esto significa que toma como variables de entrada una cadena de caracteres, a la que denominaremos *format* y un número indeterminado de variables (argumentos) en múltiples formatos. El tipo de formato es determinado por el caracter '%' en *format* seguido de uno de los caracteres "cspdiuxX%".
 
-La función imprime la cadena <i>format</i> junto con los argumentos en el orden establecido. Además, devuelve como valor de salida el número de caracteres que ha imprimido. Si detecta un problema, devuelve como valor -1.
+La función imprime la cadena *format* junto con los argumentos en el orden establecido. Además, devuelve como valor de salida el número de caracteres que ha imprimido. Si detecta un problema, devuelve como valor -1.
 
-Es posible variar el formato con <i>flags</i>, así como una anchura mínima y una precisión.
+Es posible variar el formato con *flags*, así como una anchura mínima y una precisión.
 
 ## Instrucciones
 
 ### Compilación
 
-Para compilar la librería únicamente es necesario escribir el comando make en la raíz del directorio en el que se encuentre el Makefile. Dicho Makefile posee las reglas all, clean, fclean y re, las cuales crean la librería, borran los objetos temporales, hace la regla clean y elimina también la librería, y ejecuta all tras fclean respectivamente. El resultado final será una librería denominada <i>libft.a</i>.
+Para compilar la librería únicamente es necesario escribir el comando make en la raíz del directorio en el que se encuentre el Makefile. Dicho Makefile posee las reglas all, clean, fclean y re, las cuales crean la librería, borran los objetos temporales, hace la regla clean y elimina también la librería, y ejecuta all tras fclean respectivamente. El resultado final será una librería denominada *libft.a*.
 
 ### Ejecución
 
@@ -38,14 +38,15 @@ Para escribir un argumento se debe escribir en el formato un caracter '%' seguid
 - %c: escribe un caracter.
 - %s: escribe una cadena de caracteres.
 - %p: escribe un puntero en formato hexadecimal.
-- %d y %i: escriben un número entero (formato <i>int</i>). No existe ninguna diferencia entre ambos.
+- %d y %i: escriben un número entero (formato *int*). No existe ninguna diferencia entre ambos.
 - %u: escribe un número entero  sin signo.
 - %x y %X: escriben un número hexadecimal desde su forma decimal. Ponen los dígitos abcdef en minúscula y mayúscula respectivamente.
 - %%: escribe simplemente un símbolo de porcentaje. No requiere argumento.
+- %f: no era necesario para el currículo de 42. Escribe un número de precisión doble. En este caso, la precisión indica el número de decimales que se tienen que imprimir. Este valor está por defecto fijado en 6.
 
 Alternativamente se pueden usar flags y definir la anchura mínima y la precisión. Para ello se debe indicar entre el '%' y cualquier identificador 'a'. Siempre deben tener el siguiente orden:
 ```vim
-ft_printf("%[flags][anchura].[precisión]a", ...)
+ft_printf("%[flags][anchura].[precisión]/[descriptor  de archivos]a"/, ...)
 ```
 - Flags: cambian el formato del argumento. La función ft_printf tiene cinco flags:
   - -: En vez de añadir espacios a la izquierda los añade a la derecha. Tiene prioridad sobre la flag '0'.
@@ -55,6 +56,7 @@ ft_printf("%[flags][anchura].[precisión]a", ...)
   - Espacio: Lo mismo que '+', pero añade un espacio.
 - Anchura mínima: se define como el número mínimo de caracteres que deben imprimirse. Si no existen flags añade espacios a la izquierda. Para el identificador %% siempre será igual a 1.
 - Precisión: al imprimir números indica el número de dígitos que se han de escribir. Debe empezar antes de un punto. Si es mayor que las cifras del número añadirá ceros a la izquierda.
+- Descriptor de archivos: una función personalizada. Indica en qué descriptor de archivos se tienen que escribir los caracteres. Ideal para ponerlo en la salida de errores estándar indicándose como 2.
 
 ## Algoritmo
 

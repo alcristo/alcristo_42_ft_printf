@@ -6,13 +6,13 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 09:31:14 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/07 10:18:24 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/23 09:53:26 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/ft_printf.h"
 
-static int	print_nbr(int nbr)
+static int	print_nbr(int nbr, t_opts *opts)
 {
 	char	c;
 	long	n;
@@ -23,9 +23,9 @@ static int	print_nbr(int nbr)
 	if (n < 0)
 		n *= -1;
 	if (n > 9)
-		nc += print_nbr(n / 10);
+		nc += print_nbr(n / 10, opts);
 	c = n % 10 + '0';
-	nc += write(1, &c, 1);
+	nc += write(opts->fd, &c, 1);
 	return (nc);
 }
 
@@ -59,12 +59,12 @@ int	ft_printf_putnbr_opts(int nbr, t_opts *opts)
 	sign = (opts->plus == 1 || opts->space == 1 || nbr < 0);
 	nc += ft_printf_nbr_padtoleft(opts, chrs_n, (nbr >= 0), sign);
 	if (chrs_n > 0)
-		nc += print_nbr(nbr);
+		nc += print_nbr(nbr, opts);
 	if (opts->right == 1 && opts->width > nc)
 	{
 		opts->width -= nc;
 		while (opts->width-- > 0)
-			nc += write(1, " ", 1);
+			nc += write(opts->fd, " ", 1);
 	}
 	return (nc);
 }

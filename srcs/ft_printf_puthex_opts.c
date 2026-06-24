@@ -6,13 +6,13 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 09:57:31 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/07 11:40:49 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/23 09:54:21 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/ft_printf.h"
 
-static int	print_hex(unsigned int nbr, int caps)
+static int	print_hex(unsigned int nbr, int caps, t_opts *opts)
 {
 	char	*base;
 	char	c;
@@ -25,9 +25,9 @@ static int	print_hex(unsigned int nbr, int caps)
 		base = "0123456789abcdef";
 	c = 0;
 	if (nbr > 15)
-		nc += print_hex(nbr / 16, caps);
+		nc += print_hex(nbr / 16, caps, opts);
 	c = base[nbr % 16];
-	nc += write(1, &c, 1);
+	nc += write(opts->fd, &c, 1);
 	return (nc);
 }
 
@@ -59,12 +59,12 @@ int	ft_printf_puthex_opts(unsigned int nbr, int caps, t_opts *opts)
 		print_alt = 0;
 	nc += ft_printf_hex_padtoleft(opts, chrs_n, caps, print_alt);
 	if (chrs_n > 0)
-		nc += print_hex(nbr, caps);
+		nc += print_hex(nbr, caps, opts);
 	if (opts->right == 1)
 	{
 		opts->width -= nc;
 		while (opts->width-- > 0)
-			nc += write(1, " ", 1);
+			nc += write(opts->fd, " ", 1);
 	}
 	return (nc);
 }

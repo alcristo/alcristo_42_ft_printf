@@ -6,7 +6,7 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 10:40:14 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/07 11:39:35 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/10 13:35:24 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ static int	print_zeros(t_opts *opts, int chrs_n, int plus, int sign)
 	if (plus == 1)
 	{
 		if (opts->plus == 1)
-			nc += write(1, "+", 1);
+			nc += write(opts->fd, "+", 1);
 		else if (opts->space == 1)
-			nc += write(1, " ", 1);
+			nc += write(opts->fd, " ", 1);
 	}
 	else
-		nc += (write(1, "-", 1));
+		nc += (write(opts->fd, "-", 1));
 	if (opts->zero == 1 && opts->precision < 0 && opts->right == 0)
 		prc = opts->width - sign;
 	else
@@ -36,7 +36,7 @@ static int	print_zeros(t_opts *opts, int chrs_n, int plus, int sign)
 		prc = opts->precision;
 	}
 	while (prc-- > chrs_n)
-		nc += write(1, "0", 1);
+		nc += write(opts->fd, "0", 1);
 	return (nc);
 }
 
@@ -50,7 +50,7 @@ static int	print_spaces(t_opts *opts, int chrs_n, int plus, int sign)
 	if (opts->precision < chrs_n)
 		opts->precision = chrs_n;
 	while (opts->width-- > opts->precision + sign)
-		nc += write(1, " ", 1);
+		nc += write(opts->fd, " ", 1);
 	return (nc + print_zeros(opts, chrs_n, plus, sign));
 }
 

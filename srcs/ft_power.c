@@ -1,34 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_puthex.c                                 :+:      :+:    :+:   */
+/*   ft_power.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/29 09:57:31 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/07 11:42:32 by alcristo         ###   ########.fr       */
+/*   Created: 2026/06/22 09:26:12 by alcristo          #+#    #+#             */
+/*   Updated: 2026/06/23 10:49:29 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "includes/ft_printf.h"
 
-int	ft_printf_puthex(unsigned int nbr, int caps)
+long	ft_power(long base, long exp)
 {
-	char	*base;
-	char	c;
-	int		nc;
-
-	if (nbr == 0)
-		return (write(1, "0", 1));
-	if (caps == 1)
-		base = "0123456789ABCDEF";
-	else
-		base = "0123456789abcdef";
-	c = 0;
-	nc = 0;
-	if (nbr > 15)
-		nc += ft_printf_puthex(nbr / 16, caps);
-	c = base[nbr % 16];
-	nc += write(1, &c, 1);
-	return (nc);
+	if (base == 1 || exp == 0)
+		return (1);
+	if (base == 0 || exp < 0)
+		return (0);
+	return (base * ft_power(base, exp - 1));
 }

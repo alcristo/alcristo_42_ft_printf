@@ -6,26 +6,26 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 13:41:13 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/07 11:31:54 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/23 09:54:09 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/ft_printf.h"
 
-static int	print_hex(size_t nbr)
+static int	print_hex(size_t nbr, t_opts *opts)
 {
 	char	*base;
 	char	c;
 	int		nc;
 
 	if (!nbr)
-		return (write(1, "(nil)", 5));
+		return (write(opts->fd, "(nil)", 5));
 	nc = 0;
 	base = "0123456789abcdef";
 	if (nbr > 15)
-		nc += print_hex(nbr / 16);
+		nc += print_hex(nbr / 16, opts);
 	c = base[nbr % 16];
-	nc += write(1, &c, 1);
+	nc += write(opts->fd, &c, 1);
 	return (nc);
 }
 
@@ -37,12 +37,12 @@ static int	print_zeros(size_t addr, t_opts *opts, int prc, int chrs_n)
 		return (0);
 	nc = 0;
 	if (opts->plus == 1)
-		nc += write(1, "+", 1);
+		nc += write(opts->fd, "+", 1);
 	else if (opts->space == 1)
-		nc += write(1, " ", 1);
+		nc += write(opts->fd, " ", 1);
 	nc += write(1, "0x", 2);
 	while (--prc > chrs_n)
-		nc += write(1, "0", 1);
+		nc += write(opts->fd, "0", 1);
 	return (nc);
 }
 
@@ -62,7 +62,7 @@ static int	pad_to_left(size_t addr, t_opts *opts, int chrs_n, int sign)
 			else
 			{
 				while (opts->width-- > opts->precision + (2 + sign) * !(!addr))
-					nc += write(1, " ", 1);
+					nc += write(opts->fd, " ", 1);
 				nc += print_zeros(addr, opts, opts->precision, chrs_n);
 			}
 		}
@@ -105,12 +105,12 @@ int	ft_printf_putmem_opts(void *memadd, t_opts *opts)
 		opts->precision = chrs_n;
 	nc = 0;
 	nc += pad_to_left(addr, opts, chrs_n, sign);
-	nc += print_hex(addr);
+	nc += print_hex(addr, opts);
 	if (opts->right == 1)
 	{
 		opts->width -= nc;
 		while (opts->width-- > 0)
-			nc += write(1, " ", 1);
+			nc += write(opts->fd, " ", 1);
 	}
 	return (nc);
 }

@@ -6,13 +6,13 @@
 /*   By: alcristo <alcristo@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/04 13:51:26 by alcristo          #+#    #+#             */
-/*   Updated: 2026/06/06 14:56:10 by alcristo         ###   ########.fr       */
+/*   Updated: 2026/06/10 13:38:11 by alcristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/ft_printf.h"
 
-static int	fill_str(char *s, int prc)
+static int	fill_str(char *s, int prc, t_opts *opts)
 {
 	int		nc;
 
@@ -21,7 +21,7 @@ static int	fill_str(char *s, int prc)
 	nc = 0;
 	while (s[nc] && prc)
 	{
-		nc += write(1, &s[nc], 1);
+		nc += write(opts->fd, &s[nc], 1);
 		prc--;
 	}
 	return (nc);
@@ -58,15 +58,15 @@ int	ft_printf_putstr_opts(char *s, t_opts *opts)
 	if (opts->right == 0)
 	{
 		while (opts->width-- > len)
-			nc += write(1, " ", 1);
+			nc += write(opts->fd, " ", 1);
 	}
 	if (len > 0)
-		nc += fill_str(s, len);
+		nc += fill_str(s, len, opts);
 	if (opts->right == 1)
 	{
 		opts->width -= nc;
 		while (opts->width-- > 0)
-			nc += write(1, " ", 1);
+			nc += write(opts->fd, " ", 1);
 	}
 	return (nc);
 }
